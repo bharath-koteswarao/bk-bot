@@ -31,7 +31,7 @@ function parseMessages(req) {
         data['entry'].forEach(function (entry) {
             entry['messaging'].forEach(function (messageObject) {
                 userMessage= messageObject.message.text;
-                recipientId=messageObject.recipient.id;
+                recipientId=messageObject.sender.id;
             });
         });
         var replyMessage="Hello how are you !!";
