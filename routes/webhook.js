@@ -3,7 +3,8 @@
  */
 var express = require('express');
 var router = express.Router();
-var config = require(__dirname+"/../public/config");
+var config = require(__dirname + "/../public/config");
+var request= require("request");
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -16,11 +17,57 @@ router.get('/', function (req, res, next) {
     }
 });
 
+
 router.post('/', function (req, res) {
-    var data = req.body;
-    console.log("Data coming\n\n");
-    console.log(data);
+    parseMessages(req);
     res.sendStatus(200);
 });
 
+function parseMessages(req) {
+    var userMessage;
+    var recipientId;
+    var data = req.body;
+    if (data.object === 'page') {
+        data['entry'].forEach(function (entry) {
+            entry['messaging'].forEach(function (messageObject) {
+                userMessage= messageObject.message.text;
+                recipientId=messageObject.recipient.id;
+            });
+        });
+        var replyMessage="Hello how are you !!";
+        sendReply(recipientId,replyMessage);
+    }
+}
+
+function replyMessage(userMessage) {
+    return "hii how are you !!";
+}
+
+function sendReply(recipientId, replyMessage) {
+    var messageData={
+        recipient:{
+            id:recipientId
+        },
+        message:{
+            text:replyMessage
+        }
+    };
+    callSendReplyApi(messageData);
+}
+
+function callSendReplyApi(messageData) {
+    request({
+        uri: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: { access_token: config.access_token },
+        method: 'POST',
+        json: messageData
+    }, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            console.log(body);
+        } else {
+            console.log("Error occured");
+            console.log(response);
+        }
+    });
+}
 module.exports = router;
