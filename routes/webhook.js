@@ -16,7 +16,7 @@ router.get('/', function (req, res, next) {
     }
 });
 
-router.post('/webhook', function (req, res) {
+router.post('/', function (req, res) {
     var data = req.body;
     console.log("Data coming\n\n");
     console.log(data);
