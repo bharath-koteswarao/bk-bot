@@ -34,20 +34,19 @@ function parseMessages(req) {
                 recipientId = messageObject.sender.id;
             });
         });
-        var reply = "Hello world";
+        var reply = replyMessage(userMessage);
         sendReply(recipientId, reply);
     }
 }
 
 function replyMessage(userMessage) {
-    var greetingPattern = /^h*a*i*\W|^h*a*i*\w/i;
-    if (greetingPattern.test(userMessage)){
-        return "Hello";
-    }
+
     var tokens=userMessage.split(" ");
     if (tokens.includes("show time table") || tokens.includes("show table")
         || tokens.includes("show") || tokens.includes("period") || tokens.includes("periods") ||
         tokens.includes("show period") || tokens.includes("now")){
+        return "I'll show your time table now !!";
+    } else {
         return "I'll show your time table now !!";
     }
 
