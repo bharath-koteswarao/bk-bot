@@ -4,7 +4,7 @@
 var express = require('express');
 var router = express.Router();
 var config = require(__dirname + "/../public/config");
-var request= require("request");
+var request = require("request");
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -30,26 +30,36 @@ function parseMessages(req) {
     if (data.object === 'page') {
         data['entry'].forEach(function (entry) {
             entry['messaging'].forEach(function (messageObject) {
-                userMessage= messageObject.message.text;
-                recipientId=messageObject.sender.id;
+                userMessage = messageObject.message.text;
+                recipientId = messageObject.sender.id;
             });
         });
-        var replyMessage="Hello how are you !!";
-        sendReply(recipientId,replyMessage);
+        var reply = replyMessage(userMessage);
+        sendReply(recipientId, reply);
     }
 }
 
 function replyMessage(userMessage) {
-    return "hii how are you !!";
+    var greetingPattern = /^h*a*i*\W|^h*a*i*\w/i;
+    if (greetingPattern.test(userMessage)){
+        return "Hi how are you ?";
+    }
+    var tokens=userMessage.split(" ");
+    if (tokens.includes("show time table") || tokens.includes("show table")
+        || tokens.includes("show") || tokens.includes("period") || tokens.includes("periods") ||
+        tokens.includes("show period") || tokens.includes("now")){
+        return "I'll show your time table now !!";
+    }
+
 }
 
 function sendReply(recipientId, replyMessage) {
-    var messageData={
-        recipient:{
-            id:recipientId
+    var messageData = {
+        recipient: {
+            id: recipientId
         },
-        message:{
-            text:replyMessage
+        message: {
+            text: replyMessage
         }
     };
     callSendReplyApi(messageData);
@@ -58,7 +68,7 @@ function sendReply(recipientId, replyMessage) {
 function callSendReplyApi(messageData) {
     request({
         uri: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: { access_token: config.access_token },
+        qs: {access_token: config.access_token},
         method: 'POST',
         json: messageData
     }, function (error, response, body) {
