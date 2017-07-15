@@ -7,6 +7,7 @@ var router = express.Router();
 /* GET home page. */
 router.post('/', function(req, res, next) {
     res.send(req.body.name+" "+"is response");
+    res.sendStatus(200);
 });
 
 module.exports = router;
