@@ -34,7 +34,7 @@ function parseMessages(req) {
                 recipientId = messageObject.sender.id;
             });
         });
-        var reply = replyMessage(userMessage);
+        var reply = "Hello world";
         sendReply(recipientId, reply);
     }
 }
@@ -42,7 +42,7 @@ function parseMessages(req) {
 function replyMessage(userMessage) {
     var greetingPattern = /^h*a*i*\W|^h*a*i*\w/i;
     if (greetingPattern.test(userMessage)){
-        return "Hi how are you ?";
+        return "Hello";
     }
     var tokens=userMessage.split(" ");
     if (tokens.includes("show time table") || tokens.includes("show table")
