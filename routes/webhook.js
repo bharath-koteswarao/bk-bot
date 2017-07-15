@@ -3,10 +3,10 @@
  */
 var express = require('express');
 var router = express.Router();
-var config=require("config");
+var config = require(__dirname+"/../public/config");
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
     if (req.query['hub.mode'] === 'subscribe' &&
         req.query['hub.verify_token'] === config.verify_token) {
         res.status(200).send(req.query['hub.challenge']);
