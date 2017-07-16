@@ -182,17 +182,17 @@ function parseMessages(req) {
 }
 
 function replyMessage(userMessage) {
-
-    var tokens = userMessage.split(" ");
-    if (userMessage==="show") {
-        var date = new Date();
-        var currentSlot = getSlot(date);
-        var slotInfo=slots.getSlotInfo(currentSlot);
-        return slotInfo.subject+"\n"+slotInfo.venue+"\n"+slotInfo.slot+"\n"+slotInfo.faculty;
-    } else {
-        return "Hello !!\nYou can ask me these \n 1) Show my time table \n2) What is the current slot running now \n3)How many periods do I have now\n 4)" +
-            "";
-    }
+    return "You typed "+userMessage;
+    //var tokens = userMessage.split(" ");
+    // if (userMessage==="show") {
+    //     var date = new Date();
+    //     var currentSlot = getSlot(date);
+    //     var slotInfo=slots.getSlotInfo(currentSlot);
+    //     return slotInfo.subject+"\n"+slotInfo.venue+"\n"+slotInfo.slot+"\n"+slotInfo.faculty;
+    // } else {
+    //     return "Hello !!\nYou can ask me these \n 1) Show my time table \n2) What is the current slot running now \n3)How many periods do I have now\n 4)" +
+    //         "";
+    // }
 }
 
 function sendReply(recipientId, replyMessage) {
