@@ -184,9 +184,7 @@ function parseMessages(req) {
 function replyMessage(userMessage) {
 
     var tokens = userMessage.split(" ");
-    if (tokens.includes("show time table") || tokens.includes("period now")
-        || tokens.includes("show") || tokens.includes("period") || tokens.includes("periods") ||
-        tokens.includes("show period") || tokens.includes("now")) {
+    if (userMessage==="show") {
         var date = new Date();
         var currentSlot = getSlot(date);
         var slotInfo=slots.getSlotInfo(currentSlot);
@@ -195,8 +193,6 @@ function replyMessage(userMessage) {
         return "Hello !!\nYou can ask me these \n 1) Show my time table \n2) What is the current slot running now \n3)How many periods do I have now\n 4)" +
             "";
     }
-
-
 }
 
 function sendReply(recipientId, replyMessage) {
