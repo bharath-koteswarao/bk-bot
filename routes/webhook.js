@@ -182,7 +182,7 @@ function parseMessages(req) {
 }
 
 function replyMessage(userMessage) {
-    return "You typed "+userMessage;
+    return userMessage.length%2===0;
     //var tokens = userMessage.split(" ");
     // if (userMessage==="show") {
     //     var date = new Date();
