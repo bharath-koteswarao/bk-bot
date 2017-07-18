@@ -98,6 +98,17 @@ var slots = {
     }
 };
 
+var slotsOnToday = {
+    "monday": ['A1', 'F1', 'D1', 'B2', 'L31+L32'],
+    "tuesday": ['B1', 'E1', 'B2', 'E2', 'C2'],
+    "wednesday": ['C1', 'A1', 'F1', 'C2'],
+    "thursday": ['D1', 'B1', 'E1', 'B2'],
+    "friday": ['E1', 'C1', 'F1', 'E2', 'C2', 'L29+L30', 'L57+L58'],
+    getAllSlots: function (day) {
+        return this[day];
+    }
+};
+
 var getSlot = function (indian_time) {
     var day = indian_time.getDay();
     this.hours = indian_time.getHours();
@@ -118,6 +129,45 @@ var getSlot = function (indian_time) {
             return config.free_slot_name;
         }
     };
+    this.get_slot_of_tuesday = function (hours, minutes) {
+        if (hours === 8 && minutes <= 50) {
+            return "B1";
+        } else if (hours === 10 && minutes <= 50) {
+            return "E1";
+        } else if (hours === 14 && minutes <= 50) {
+            return "B2";
+        } else if (hours === 16 && minutes <= 50) {
+            return "E2";
+        } else if (hours === 17 && minutes <= 50) {
+            return "C2";
+        } else {
+            return config.free_slot_name;
+        }
+    };
+    this.get_slot_of_wednesday = function (hours, minutes) {
+        if (hours === 8 && minutes <= 50) return "C1";
+        else if (hours === 9 && minutes <= 50) return "A1";
+        else if (hours === 10 && minutes <= 50) return "F1";
+        else if (hours === 14 && minutes <= 50) return "C2";
+        else return config.free_slot_name;
+    };
+    this.get_slot_of_thursday = function (hours, minutes) {
+        if (hours === 8 && minutes <= 50) return "D1";
+        else if (hours === 9 && minutes <= 50) return "B1";
+        else if (hours === 11 && minutes <= 50) return "E1";
+        else if (hours === 15 && minutes <= 50) return "B2";
+        else return config.free_slot_name;
+    };
+    this.get_slot_of_friday = function (hours, minutes) {
+        if (hours === 8 && minutes <= 50) return "E1";
+        else if (hours === 9 && minutes <= 50) return "C1";
+        else if (hours === 11 && minutes <= 50) return "F1";
+        else if (hours === 12 && hours <= 14) return "L29+L30";
+        else if (hours === 14 && minutes <= 50) return "E2";
+        else if (hours === 15 && minutes <= 50) return "C2";
+        else if (hours === 16 && hours <= 18) return "L57+L58";
+        else return config.free_slot_name;
+    };
     switch (day) {
         case 0: {
             return "Today is a holiday !!";
@@ -132,20 +182,35 @@ var getSlot = function (indian_time) {
         }
         case 2: {
             return {
-                "current_slot": parent.get_slot_of_monday(parent.hours, parent.minutes),
-                "class_count": 4,
-                "lab_count": 1,
+                "current_slot": parent.get_slot_of_tuesday(parent.hours, parent.minutes),
+                "class_count": 5,
+                "lab_count": 0,
                 "total": 5
             };
         }
         case 3: {
-            return "Today is  Wednesday !!";
+            return {
+                "current_slot": parent.get_slot_of_wednesday(parent.hours, parent.minutes),
+                "class_count": 4,
+                "lab_count": 0,
+                "total": 4
+            };
         }
         case 4: {
-            return "Today is  Thursday !!";
+            return {
+                "current_slot": parent.get_slot_of_thursday(parent.hours, parent.minutes),
+                "class_count": 4,
+                "lab_count": 0,
+                "total": 4
+            };
         }
         case 5: {
-            return "Today is  Friday !!";
+            return {
+                "current_slot": parent.get_slot_of_friday(parent.hours, parent.minutes),
+                "class_count": 5,
+                "lab_count": 2,
+                "total": 7
+            };
         }
         default: {
             return "Today is a holiday !!";
@@ -199,6 +264,7 @@ function replyMessage(userMessage) {
     var builder = "";
     if (testHaiInMsg(userMessage)) {
         builder += "Hello how are you !!\n";
+        return builder;
     }
     if (tokens.indexOf("slot") >= 0) {
         if (tokens.indexOf("current") >= 0
@@ -211,6 +277,37 @@ function replyMessage(userMessage) {
         else if (tokens.indexOf("next") >= 0) {
             builder += "Functionality coming soon...";
             return builder;
+        } else if (tokens.indexOf("time table") || tokens.indexOf("on")) {
+            if (tokens.indexOf("monday") >= 0) {
+                slotsOnToday.getAllSlots("monday").forEach(function (slot) {
+                    builder += slot + "\n";
+                });
+                return builder;
+            } else if (tokens.indexOf("tuesday") >= 0) {
+                slotsOnToday.getAllSlots("tuesday").forEach(function (slot) {
+                    builder += slot + "\n";
+                });
+                return builder;
+            } else if (tokens.indexOf("wednesday") >= 0) {
+                slotsOnToday.getAllSlots("wednesday").forEach(function (slot) {
+                    builder += slot + "\n";
+                });
+                return builder;
+            } else if (tokens.indexOf("thursday") >= 0) {
+                slotsOnToday.getAllSlots("thursday").forEach(function (slot) {
+                    builder += slot + "\n";
+                });
+                return builder;
+            } else if (tokens.indexOf("friday") >= 0) {
+                slotsOnToday.getAllSlots("friday").forEach(function (slot) {
+                    builder += slot + "\n";
+                });
+                return builder;
+            } else if (tokens.indexOf("saturday") >= 0 || (tokens.indexOf("sunday") >= 0)) {
+                return "No slots today";
+            } else {
+                return "Time table on what day ?";
+            }
         } else {
             builder += JSON.stringify(getSlot(indianTime));
             return builder;
@@ -220,8 +317,9 @@ function replyMessage(userMessage) {
 
     // todo commands for hi and hello things
     // todo should show the current slot running now
-    // todo should show the next class
+    // todo should show the next class and venue
     // todo should show next break
+    // todo should show all classes on a specified day
     // todo should show number of classes today
     // todo should have some fun with in it
 }
