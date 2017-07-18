@@ -186,29 +186,33 @@ function parseMessages(req) {
     }
 }
 
-function slotConversation(tokens) {
-
+function testHaiInMsg(msg) {
+    if (msg.indexOf("hii") >= 0 || msg.indexOf("hi") >= 0 ||
+        msg.indexOf("hai") >= 0 || msg.indexOf("haai") >= 0 || msg.indexOf("haaai") >= 0 ||
+        msg.indexOf("haiii") >= 0) {
+        return true;
+    }
 }
 function replyMessage(userMessage) {
     userMessage = userMessage.toLowerCase();
     var tokens = userMessage.split(" ");
-    var builder="";
-    if (/h*a*i*/.test(userMessage)) {
-        builder+= "Hello how are you !!\n";
+    var builder = "";
+    if (testHaiInMsg(userMessage)) {
+        builder += "Hello how are you !!\n";
     }
     if (tokens.indexOf("slot") >= 0) {
         if (tokens.indexOf("current") >= 0
             || tokens.indexOf("running") >= 0
             || tokens.indexOf("now") >= 0
             || tokens.indexOf("show") >= 0) {
-            builder+=JSON.stringify(getSlot(indianTime));
+            builder += JSON.stringify(getSlot(indianTime));
             return builder;
         }
         else if (tokens.indexOf("next") >= 0) {
-            builder+="Functionality coming soon...";
+            builder += "Functionality coming soon...";
             return builder;
         } else {
-            builder+=JSON.stringify(getSlot(indianTime));
+            builder += JSON.stringify(getSlot(indianTime));
             return builder;
         }
     }
