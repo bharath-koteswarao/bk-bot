@@ -178,6 +178,7 @@ function parseMessages(req) {
         });
         var reply = replyMessage(userMessage);
         sendReply(recipientId, reply);
+        sendReply(recipientId,"Working");
     }
 }
 
