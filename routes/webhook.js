@@ -5,6 +5,7 @@ var express = require('express');
 var router = express.Router();
 var config = require(__dirname + "/../public/config");
 var request = require("request");
+var indianTime=require(__dirname+"/../get-indian-time");
 var container = {};
 
 
@@ -98,10 +99,10 @@ var slots = {
     }
 };
 
-var getSlot = function (date) {
-    var day = date.getDay();
-    this.hours = date.getHours();
-    this.minutes = date.getMinutes();
+var getSlot = function (indian_time) {
+    var day = indian_time.getDay();
+    this.hours = indian_time.getHours();
+    this.minutes = indian_time.getMinutes();
     var parent = this;
     this.get_slot_of_monday = function (hours, minutes) {
         if (hours === 8 && minutes <= 50) {
@@ -131,16 +132,21 @@ var getSlot = function (date) {
             };
         }
         case 2: {
-            return "Today is a Tuesday !!";
+            return {
+                "current_slot": parent.get_slot_of_monday(parent.hours, parent.minutes),
+                "class_count": 4,
+                "lab_count": 1,
+                "total": 5
+            };
         }
         case 3: {
-            return "Today is a Wednesday !!";
+            return "Today is  Wednesday !!";
         }
         case 4: {
-            return "Today is a Thursday !!";
+            return "Today is  Thursday !!";
         }
         case 5: {
-            return "Today is a Friday !!";
+            return "Today is  Friday !!";
         }
         default: {
             return "Today is a holiday !!";
@@ -182,17 +188,12 @@ function parseMessages(req) {
 }
 
 function replyMessage(userMessage) {
-    return getSlot(new Date());
-    //var tokens = userMessage.split(" ");
-    // if (userMessage==="show") {
-    //     var date = new Date();
-    //     var currentSlot = getSlot(date);
-    //     var slotInfo=slots.getSlotInfo(currentSlot);
-    //     return slotInfo.subject+"\n"+slotInfo.venue+"\n"+slotInfo.slot+"\n"+slotInfo.faculty;
-    // } else {
-    //     return "Hello !!\nYou can ask me these \n 1) Show my time table \n2) What is the current slot running now \n3)How many periods do I have now\n 4)" +
-    //         "";
-    // }
+    // todo commands for hi and hello things
+    // todo should show the current slot running now
+    // todo should show the next class
+    // todo should show next break
+    // todo should show number of classes today
+    // todo should have some fun with in it
 }
 
 function sendReply(recipientId, replyMessage) {
