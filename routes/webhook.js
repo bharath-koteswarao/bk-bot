@@ -131,16 +131,16 @@ var getSlot = function (date) {
             };
         }
         case 2: {
-            break;
+            return "Today is a Tuesday !!";
         }
         case 3: {
-            break;
+            return "Today is a Wednesday !!";
         }
         case 4: {
-            break;
+            return "Today is a Thursday !!";
         }
         case 5: {
-            break;
+            return "Today is a Friday !!";
         }
         default: {
             return "Today is a holiday !!";
