@@ -142,7 +142,7 @@ var getSlot = function (date) {
         case 5: {
             break;
         }
-        case 6: {
+        default: {
             return "Today is a holiday !!";
         }
     }
@@ -178,7 +178,6 @@ function parseMessages(req) {
         });
         var reply = replyMessage(userMessage);
         sendReply(recipientId, reply);
-        sendReply(recipientId,"Working");
     }
 }
 
