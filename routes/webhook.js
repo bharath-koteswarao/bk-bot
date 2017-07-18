@@ -187,31 +187,31 @@ function parseMessages(req) {
 }
 
 function slotConversation(tokens) {
+
+}
+function replyMessage(userMessage) {
+    userMessage = userMessage.toLowerCase();
+    var tokens = userMessage.split(" ");
+    var builder="";
+    if (/h*a*i*/.test(userMessage)) {
+        builder+= "Hello how are you !!\n";
+    }
     if (tokens.indexOf("slot") >= 0) {
         if (tokens.indexOf("current") >= 0
             || tokens.indexOf("running") >= 0
             || tokens.indexOf("now") >= 0
             || tokens.indexOf("show") >= 0) {
-            return JSON.stringify(getSlot(indianTime));
+            builder+=JSON.stringify(getSlot(indianTime));
+            return builder;
         }
         else if (tokens.indexOf("next") >= 0) {
-            return "Functionality coming soon...";
+            builder+="Functionality coming soon...";
+            return builder;
         } else {
-            return JSON.stringify(getSlot(indianTime));
+            builder+=JSON.stringify(getSlot(indianTime));
+            return builder;
         }
     }
-}
-function replyMessage(userMessage) {
-    userMessage = userMessage.toLowerCase();
-    var tokens = userMessage.split(" ");
-    if (/h*a*i*/.test(userMessage)) {
-        return "Hello how are you !!";
-    }
-
-
-    return slotConversation(tokens);
-
-
 
 
     // todo commands for hi and hello things
