@@ -182,7 +182,8 @@ function parseMessages(req) {
 }
 
 function replyMessage(userMessage) {
-    return userMessage.length%2===0?"Yes":"No";
+    var time=new Date();
+    return time.getHours()+":"+time.getMinutes()+":"+time.getSeconds();
     //var tokens = userMessage.split(" ");
     // if (userMessage==="show") {
     //     var date = new Date();
