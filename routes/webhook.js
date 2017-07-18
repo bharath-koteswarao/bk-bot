@@ -5,8 +5,8 @@ var express = require('express');
 var router = express.Router();
 var config = require(__dirname + "/../public/config");
 var request = require("request");
-var indianTime=require(__dirname+"/../get-indian-time");
-var container = {};
+var indianTime = require(__dirname + "/../get-indian-time");
+
 
 
 var slots = {
@@ -188,6 +188,17 @@ function parseMessages(req) {
 }
 
 function replyMessage(userMessage) {
+    var tokens = userMessage.split(" ");
+    if (tokens.indexOf("slot") >= 0) {
+        if (tokens.indexOf("current") >= 0 || tokens.indexOf("running") >= 0 || tokens.indexOf("now") >= 0) {
+            return JSON.stringify(getSlot(indianTime));
+        }
+        else if (tokens.indexOf("next") >= 0) {
+            return "Functionality coming soon...";
+        } else {
+            return JSON.stringify(getSlot(indianTime));
+        }
+    }
     // todo commands for hi and hello things
     // todo should show the current slot running now
     // todo should show the next class
