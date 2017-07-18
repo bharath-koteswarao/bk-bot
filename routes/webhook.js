@@ -8,7 +8,6 @@ var request = require("request");
 var indianTime = require(__dirname + "/../get-indian-time");
 
 
-
 var slots = {
     getSlotInfo: function (slot) {
         return this[slot];
@@ -187,10 +186,12 @@ function parseMessages(req) {
     }
 }
 
-function replyMessage(userMessage) {
-    var tokens = userMessage.split(" ");
+function slotConversation(tokens) {
     if (tokens.indexOf("slot") >= 0) {
-        if (tokens.indexOf("current") >= 0 || tokens.indexOf("running") >= 0 || tokens.indexOf("now") >= 0) {
+        if (tokens.indexOf("current") >= 0
+            || tokens.indexOf("running") >= 0
+            || tokens.indexOf("now") >= 0
+            || tokens.indexOf("show") >= 0) {
             return JSON.stringify(getSlot(indianTime));
         }
         else if (tokens.indexOf("next") >= 0) {
@@ -199,6 +200,20 @@ function replyMessage(userMessage) {
             return JSON.stringify(getSlot(indianTime));
         }
     }
+}
+function replyMessage(userMessage) {
+    userMessage = userMessage.toLowerCase();
+    var tokens = userMessage.split(" ");
+    if (/h*a*i*/.test(userMessage)) {
+        return "Hello how are you !!";
+    }
+
+
+    return slotConversation(tokens);
+
+
+
+
     // todo commands for hi and hello things
     // todo should show the current slot running now
     // todo should show the next class
