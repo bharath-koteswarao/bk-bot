@@ -279,7 +279,7 @@ function replyMessage(userMessage) {
             return builder;
         }
     }
-    if (tokens.indexOf("time table")>=0 || tokens.indexOf("on")>=0) {
+    if (tokens.indexOf("timetable")>=0 || tokens.indexOf("on")>=0) {
         if (tokens.indexOf("monday") >= 0) {
             slotsOnToday.getAllSlots("monday").forEach(function (slot) {
                 builder += slot + "\n";
@@ -311,7 +311,7 @@ function replyMessage(userMessage) {
             return "Time table on what day ?";
         }
     } else {
-        builder += JSON.stringify(getSlot(indianTime));
+        builder += "Have a nice day!!";
         return builder;
     }
 
