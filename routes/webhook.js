@@ -292,7 +292,8 @@ function replyMessage(userMessage) {
             return builder;
         } else if (tokens.indexOf("wednesday") >= 0) {
             slotsOnToday.getAllSlots("wednesday").forEach(function (slot) {
-                builder += slots.getSlotInfo(slot) + "\n";
+                builder += slots.getSlotInfo(slot).name + "\n"+slots.getSlotInfo(slot).venue;
+                builder+="\n";
             });
             return builder;
         } else if (tokens.indexOf("thursday") >= 0) {
