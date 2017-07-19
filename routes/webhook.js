@@ -326,10 +326,26 @@ function replyMessage(userMessage) {
             builder += slots.getSlotInfo(slot).name + "\t\t" + slots.getSlotInfo(slot).venue + "\t\t" + slots.getSlotInfo(slot).slot;
             builder += "\n";
         });
-    } else if (tokens.indexOf("next")>=0 && tokens.indexOf("class")>=0) {
+        return builder;
+    } else if (tokens.indexOf("next") >= 0 && tokens.indexOf("class") >= 0) {
         // todo show the next class
-    }else if (tokens.indexOf("next")>=0 && (tokens.indexOf("gap")>=0 || tokens.indexOf("break")>=0)) {
+        if (indianTime.getDay() === 0 || indianTime.getDay() === 6)return "Today is a holiday!!";
+        else {
+            var next = getSlot(indianTime);
+            while (next.current_slot === config.free_slot_name) {
+                next = getSlot(indianTime.setHours(indianTime.getHours() + 1));
+            }
+            var nextSlot = slots.getSlotInfo(next.current_slot);
+            builder += "Next class is " + nextSlot.name + " at " + nextSlot.venue+"\n\n\n Have a nice day!!";
+            return builder;
+        }
+
+    } else if (tokens.indexOf("next") >= 0 && (tokens.indexOf("gap") >= 0 || tokens.indexOf("break") >= 0)) {
         // todo show the next break
+        if (indianTime.getDay() === 0 || indianTime.getDay() === 6)return "Today is a holiday!!";
+        else {
+            return "Coming soon...!!";
+        }
     } else {
         builder += "Have a nice day!!";
         return builder;
