@@ -247,6 +247,7 @@ function parseMessages(req) {
             });
         });
         var reply = replyMessage(userMessage);
+        showTypingDots(recipientId);
         sendReply(recipientId, reply);
     }
 }
@@ -254,7 +255,7 @@ function parseMessages(req) {
 function testHaiInMsg(msg) {
     if (msg.indexOf("hii") >= 0 || msg.indexOf("hi") >= 0 ||
         msg.indexOf("hai") >= 0 || msg.indexOf("haai") >= 0 || msg.indexOf("haaai") >= 0 ||
-        msg.indexOf("haiii") >= 0) {
+        msg.indexOf("haiii") >= 0 || msg.indexOf("hello")>=0) {
         return true;
     }
 }
@@ -279,37 +280,42 @@ function replyMessage(userMessage) {
             return builder;
         }
     }
-    if (tokens.indexOf("slots")>=0 || tokens.indexOf("on")>=0) {
+    if (tokens.indexOf("slots")>=0 || tokens.indexOf("on")>=0 || tokens.indexOf("monday")>=0 || tokens.indexOf("tuesday")>=0
+        || tokens.indexOf("wednesday")>=0 || tokens.indexOf("thursday")>=0 || tokens.indexOf("friday")>=0 || tokens.indexOf("timetable")>=0 ) {
         if (tokens.indexOf("monday") >= 0) {
             slotsOnToday.getAllSlots("monday").forEach(function (slot) {
-                builder += slots.getSlotInfo(slot) + "\n";
+                builder += slots.getSlotInfo(slot).name + "\t"+slots.getSlotInfo(slot).venue+"\t"+slots.getSlotInfo(slot);
+                builder+="\n";
             });
             return builder;
         } else if (tokens.indexOf("tuesday") >= 0) {
             slotsOnToday.getAllSlots("tuesday").forEach(function (slot) {
-                builder += slots.getSlotInfo(slot) + "\n";
+                builder += slots.getSlotInfo(slot).name + "\t"+slots.getSlotInfo(slot).venue+"\t"+slots.getSlotInfo(slot);
+                builder+="\n";
             });
             return builder;
         } else if (tokens.indexOf("wednesday") >= 0) {
             slotsOnToday.getAllSlots("wednesday").forEach(function (slot) {
-                builder += slots.getSlotInfo(slot).name + "\n"+slots.getSlotInfo(slot).venue;
+                builder += slots.getSlotInfo(slot).name + "\t"+slots.getSlotInfo(slot).venue+"\t"+slots.getSlotInfo(slot);
                 builder+="\n";
             });
             return builder;
         } else if (tokens.indexOf("thursday") >= 0) {
             slotsOnToday.getAllSlots("thursday").forEach(function (slot) {
-                builder += slot + "\n";
+                builder += slots.getSlotInfo(slot).name + "\t"+slots.getSlotInfo(slot).venue+"\t"+slots.getSlotInfo(slot);
+                builder+="\n";
             });
             return builder;
         } else if (tokens.indexOf("friday") >= 0) {
             slotsOnToday.getAllSlots("friday").forEach(function (slot) {
-                builder += slot + "\n";
+                builder += slots.getSlotInfo(slot).name + "\t"+slots.getSlotInfo(slot).venue+"\t"+slots.getSlotInfo(slot);
+                builder+="\n";
             });
             return builder;
         } else if (tokens.indexOf("saturday") >= 0 || (tokens.indexOf("sunday") >= 0)) {
-            return "No slots today";
+            return "No slots on this day";
         } else {
-            return "Time table on what day ?";
+            return "slots on what day ?";
         }
     } else {
         builder += "Have a nice day!!";
@@ -350,6 +356,18 @@ function callSendReplyApi(messageData) {
         } else {
             console.log("Error occured");
             console.log(response);
+        }
+    });
+}
+
+function showTypingDots(recipientId) {
+    request({
+        uri:"https://graph.facebook.com/v2.6/me/messages?access_token="+config.access_token,
+        json:{
+            recipient:{
+                id:recipientId
+            },
+            sender_action:"typing_on"
         }
     });
 }
