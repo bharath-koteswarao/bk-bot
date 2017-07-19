@@ -277,41 +277,42 @@ function replyMessage(userMessage) {
         else if (tokens.indexOf("next") >= 0) {
             builder += "Functionality coming soon...";
             return builder;
-        } else if (tokens.indexOf("time table") || tokens.indexOf("on")) {
-            if (tokens.indexOf("monday") >= 0) {
-                slotsOnToday.getAllSlots("monday").forEach(function (slot) {
-                    builder += slot + "\n";
-                });
-                return builder;
-            } else if (tokens.indexOf("tuesday") >= 0) {
-                slotsOnToday.getAllSlots("tuesday").forEach(function (slot) {
-                    builder += slot + "\n";
-                });
-                return builder;
-            } else if (tokens.indexOf("wednesday") >= 0) {
-                slotsOnToday.getAllSlots("wednesday").forEach(function (slot) {
-                    builder += slot + "\n";
-                });
-                return builder;
-            } else if (tokens.indexOf("thursday") >= 0) {
-                slotsOnToday.getAllSlots("thursday").forEach(function (slot) {
-                    builder += slot + "\n";
-                });
-                return builder;
-            } else if (tokens.indexOf("friday") >= 0) {
-                slotsOnToday.getAllSlots("friday").forEach(function (slot) {
-                    builder += slot + "\n";
-                });
-                return builder;
-            } else if (tokens.indexOf("saturday") >= 0 || (tokens.indexOf("sunday") >= 0)) {
-                return "No slots today";
-            } else {
-                return "Time table on what day ?";
-            }
-        } else {
-            builder += JSON.stringify(getSlot(indianTime));
-            return builder;
         }
+    }
+    if (tokens.indexOf("time table") || tokens.indexOf("on")) {
+        if (tokens.indexOf("monday") >= 0) {
+            slotsOnToday.getAllSlots("monday").forEach(function (slot) {
+                builder += slot + "\n";
+            });
+            return builder;
+        } else if (tokens.indexOf("tuesday") >= 0) {
+            slotsOnToday.getAllSlots("tuesday").forEach(function (slot) {
+                builder += slot + "\n";
+            });
+            return builder;
+        } else if (tokens.indexOf("wednesday") >= 0) {
+            slotsOnToday.getAllSlots("wednesday").forEach(function (slot) {
+                builder += slot + "\n";
+            });
+            return builder;
+        } else if (tokens.indexOf("thursday") >= 0) {
+            slotsOnToday.getAllSlots("thursday").forEach(function (slot) {
+                builder += slot + "\n";
+            });
+            return builder;
+        } else if (tokens.indexOf("friday") >= 0) {
+            slotsOnToday.getAllSlots("friday").forEach(function (slot) {
+                builder += slot + "\n";
+            });
+            return builder;
+        } else if (tokens.indexOf("saturday") >= 0 || (tokens.indexOf("sunday") >= 0)) {
+            return "No slots today";
+        } else {
+            return "Time table on what day ?";
+        }
+    } else {
+        builder += JSON.stringify(getSlot(indianTime));
+        return builder;
     }
 
 
