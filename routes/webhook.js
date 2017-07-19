@@ -279,20 +279,20 @@ function replyMessage(userMessage) {
             return builder;
         }
     }
-    if (tokens.indexOf("timetable")>=0 || tokens.indexOf("on")>=0) {
+    if (tokens.indexOf("slots")>=0 || tokens.indexOf("on")>=0) {
         if (tokens.indexOf("monday") >= 0) {
             slotsOnToday.getAllSlots("monday").forEach(function (slot) {
-                builder += slot + "\n";
+                builder += slots.getSlotInfo(slot) + "\n";
             });
             return builder;
         } else if (tokens.indexOf("tuesday") >= 0) {
             slotsOnToday.getAllSlots("tuesday").forEach(function (slot) {
-                builder += slot + "\n";
+                builder += slots.getSlotInfo(slot) + "\n";
             });
             return builder;
         } else if (tokens.indexOf("wednesday") >= 0) {
             slotsOnToday.getAllSlots("wednesday").forEach(function (slot) {
-                builder += slot + "\n";
+                builder += slots.getSlotInfo(slot) + "\n";
             });
             return builder;
         } else if (tokens.indexOf("thursday") >= 0) {
