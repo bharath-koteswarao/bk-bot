@@ -98,6 +98,8 @@ var slots = {
     }
 };
 
+var all_days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+
 var slotsOnToday = {
     "monday": ['A1', 'F1', 'D1', 'B2', 'L31+L32'],
     "tuesday": ['B1', 'E1', 'B2', 'E2', 'C2'],
@@ -255,7 +257,7 @@ function parseMessages(req) {
 function testHaiInMsg(msg) {
     if (msg.indexOf("hii") >= 0 || msg.indexOf("hi") >= 0 ||
         msg.indexOf("hai") >= 0 || msg.indexOf("haai") >= 0 || msg.indexOf("haaai") >= 0 ||
-        msg.indexOf("haiii") >= 0 || msg.indexOf("hello")>=0) {
+        msg.indexOf("haiii") >= 0 || msg.indexOf("hello") >= 0) {
         return true;
     }
 }
@@ -280,36 +282,36 @@ function replyMessage(userMessage) {
             return builder;
         }
     }
-    if (tokens.indexOf("slots")>=0 || tokens.indexOf("on")>=0 || tokens.indexOf("monday")>=0 || tokens.indexOf("tuesday")>=0
-        || tokens.indexOf("wednesday")>=0 || tokens.indexOf("thursday")>=0 || tokens.indexOf("friday")>=0 || tokens.indexOf("timetable")>=0 ) {
+    if (tokens.indexOf("slots") >= 0 || tokens.indexOf("on") >= 0 || tokens.indexOf("monday") >= 0 || tokens.indexOf("tuesday") >= 0
+        || tokens.indexOf("wednesday") >= 0 || tokens.indexOf("thursday") >= 0 || tokens.indexOf("friday") >= 0 || tokens.indexOf("timetable") >= 0) {
         if (tokens.indexOf("monday") >= 0) {
             slotsOnToday.getAllSlots("monday").forEach(function (slot) {
-                builder += slots.getSlotInfo(slot).name + "\t"+slots.getSlotInfo(slot).venue+"\t"+slots.getSlotInfo(slot);
-                builder+="\n";
+                builder += slots.getSlotInfo(slot).name + "\t\t" + slots.getSlotInfo(slot).venue + "\t\t" + slots.getSlotInfo(slot).slot;
+                builder += "\n";
             });
             return builder;
         } else if (tokens.indexOf("tuesday") >= 0) {
             slotsOnToday.getAllSlots("tuesday").forEach(function (slot) {
-                builder += slots.getSlotInfo(slot).name + "\t"+slots.getSlotInfo(slot).venue+"\t"+slots.getSlotInfo(slot);
-                builder+="\n";
+                builder += slots.getSlotInfo(slot).name + "\t\t" + slots.getSlotInfo(slot).venue + "\t\t" + slots.getSlotInfo(slot).slot;
+                builder += "\n";
             });
             return builder;
         } else if (tokens.indexOf("wednesday") >= 0) {
             slotsOnToday.getAllSlots("wednesday").forEach(function (slot) {
-                builder += slots.getSlotInfo(slot).name + "\t"+slots.getSlotInfo(slot).venue+"\t"+slots.getSlotInfo(slot);
-                builder+="\n";
+                builder += slots.getSlotInfo(slot).name + "\t\t" + slots.getSlotInfo(slot).venue + "\t\t" + slots.getSlotInfo(slot).slot;
+                builder += "\n";
             });
             return builder;
         } else if (tokens.indexOf("thursday") >= 0) {
             slotsOnToday.getAllSlots("thursday").forEach(function (slot) {
-                builder += slots.getSlotInfo(slot).name + "\t"+slots.getSlotInfo(slot).venue+"\t"+slots.getSlotInfo(slot);
-                builder+="\n";
+                builder += slots.getSlotInfo(slot).name + "\t\t" + slots.getSlotInfo(slot).venue + "\t\t" + slots.getSlotInfo(slot).slot;
+                builder += "\n";
             });
             return builder;
         } else if (tokens.indexOf("friday") >= 0) {
             slotsOnToday.getAllSlots("friday").forEach(function (slot) {
-                builder += slots.getSlotInfo(slot).name + "\t"+slots.getSlotInfo(slot).venue+"\t"+slots.getSlotInfo(slot);
-                builder+="\n";
+                builder += slots.getSlotInfo(slot).name + "\t\t" + slots.getSlotInfo(slot).venue + "\t\t" + slots.getSlotInfo(slot).slot;
+                builder += "\n";
             });
             return builder;
         } else if (tokens.indexOf("saturday") >= 0 || (tokens.indexOf("sunday") >= 0)) {
@@ -317,18 +319,29 @@ function replyMessage(userMessage) {
         } else {
             return "slots on what day ?";
         }
+    } else if (tokens.indexOf("number") >= 0 || tokens.indexOf("classes") >= 0 || tokens.indexOf("today") >= 0) {
+        var day = all_days[indianTime.getDay()];
+        builder += "You have " + slotsOnToday.getAllSlots(day).length + " classes today" + "\n";
+        slotsOnToday.getAllSlots(day).forEach(function (slot) {
+            builder += slots.getSlotInfo(slot).name + "\t\t" + slots.getSlotInfo(slot).venue + "\t\t" + slots.getSlotInfo(slot).slot;
+            builder += "\n";
+        });
+    } else if (tokens.indexOf("next")>=0 && tokens.indexOf("class")>=0) {
+        // todo show the next class
+    }else if (tokens.indexOf("next")>=0 && (tokens.indexOf("gap")>=0 || tokens.indexOf("break")>=0)) {
+        // todo show the next break
     } else {
         builder += "Have a nice day!!";
         return builder;
     }
 
 
-    // todo commands for hi and hello things
-    // todo should show the current slot running now
+    // commands for hi and hello things                            done
+    // should show the current slot running now                    done
     // todo should show the next class and venue
     // todo should show next break
-    // todo should show all classes on a specified day
-    // todo should show number of classes today
+    // should show all classes on a specified day                  done
+    // should show number of classes today                    done
     // todo should have some fun with in it
 }
 
@@ -362,12 +375,12 @@ function callSendReplyApi(messageData) {
 
 function showTypingDots(recipientId) {
     request({
-        uri:"https://graph.facebook.com/v2.6/me/messages?access_token="+config.access_token,
-        json:{
-            recipient:{
-                id:recipientId
+        uri: "https://graph.facebook.com/v2.6/me/messages?access_token=" + config.access_token,
+        json: {
+            recipient: {
+                id: recipientId
             },
-            sender_action:"typing_on"
+            sender_action: "typing_on"
         }
     });
 }
